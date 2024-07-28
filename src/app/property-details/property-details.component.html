@@ -1,0 +1,112 @@
+<div class="property-details">
+  <h2>{{ property?.title }}</h2>
+  <p>{{ property?.description }}</p>
+  <div class="property-details-main">
+    <div class="row property-details-heading">
+      <div class="col-4">Property Type</div>
+      <div class="col-4">Area</div>
+      <div class="col-4">Rent</div>
+    </div>
+    <div class="row">
+      <div class="col-4">{{ property?.propertyType }}</div>
+      <div class="col-4">{{ property?.area }}</div>
+      <div class="col-4">
+        {{ property?.rentAmount }}
+        {{ property?.isNegotiable ? "(negotiable)" : "" }}
+      </div>
+    </div>
+    <div class="row property-details-heading">
+      <div class="col-12">Address</div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {{ property?.address + ", " + property?.city + ", " + property?.state }}
+      </div>
+    </div>
+    <div class="row property-details-heading">
+      <div class="col-6">Shared?</div>
+      <div class="col-6">Fully Furnished?</div>
+    </div>
+    <div class="row">
+      <div class="col-6">{{ property?.isSharedProperty ? "Yes" : "No" }}</div>
+      <div class="col-6">{{ property?.isFurnished ? "Yes" : "No" }}</div>
+    </div>
+    @if(property?.amenities?.length){
+    <div class="row property-details-heading">
+      <div class="col-12">Amenities</div>
+    </div>
+    <div class="row">
+      @for(amenity of property?.amenities; track $index){ @if(amenity[1]){
+      <div class="col-4">
+        {{ amenity }}
+      </div>
+      } }
+    </div>
+    }
+  </div>
+  <h4>Photos</h4>
+  @if(imageUrls.length){
+  <div class="property-details-image-section">
+    @for(url of imageUrls; track $index){
+    <img [src]="url" height="200" />
+    }
+  </div>
+  }
+  <div class="d-grid gap-2 d-md-flex justify-content-end buttons">
+    <button routerLink="/home" class="btn btn-outline-primary">
+      Back to Home
+    </button>
+    <button
+      class="btn"
+      (click)="toggleFavourite()"
+      [ngClass]="{
+        'btn-success': isFavourite,
+        'btn-danger': !isFavourite
+      }"
+    >
+      {{ isFavourite ? "Remove from Favourites" : "Mark as Favourite" }}
+    </button>
+  </div>
+  <hr />
+  <h4>Comments</h4>
+  @for(comment of property?.comments; track $index){
+  <div class="row padding">
+    <div class="col">
+      <div class="d-flex flex-start">
+        <img
+          class="rounded-circle shadow-1-strong me-3"
+          src="assets/profile.jpg"
+          alt="avatar"
+          width="65"
+          height="65"
+        />
+        <div class="flex-grow-1 flex-shrink-1">
+          <div>
+            <div class="d-flex justify-content-between align-items-center">
+              @if(comment.user){
+              <p class="mb-1">
+                {{ comment.user.name }}
+              </p>
+              }
+            </div>
+            <p class="small mb-0">
+              {{ comment.comment }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="form-group">
+    <textarea
+      [(ngModel)]="newComment"
+      type="text"
+      placeholder="Add your comment here"
+      class="form-control"
+    ></textarea>
+    <div class="d-grid gap-2 d-md-flex justify-content-end submit-comments">
+      <button class="btn btn-primary" (click)="submit()">Submit</button>
+    </div>
+  </div>
+</div>

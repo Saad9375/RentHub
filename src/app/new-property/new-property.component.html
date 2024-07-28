@@ -1,0 +1,305 @@
+<app-header
+  [title]="'Property Details'"
+  [showSideButtons]="'logout'"
+></app-header>
+<form [formGroup]="newPropertyForm" (ngSubmit)="createPost()">
+  <div class="form-group">
+    <label for="propertyType">Choose Apartment/Building</label>
+    <select
+      formControlName="propertyType"
+      class="form-control"
+      id="propertyType"
+    >
+      <option value="apartment">Apartment</option>
+      <option value="building">Building</option>
+    </select>
+  </div>
+  <h4>Is this a Shared Property?</h4>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      formControlName="isSharedProperty"
+      name="isSharedProperty"
+      id="sharedProperty"
+      [value]="true"
+    />
+    <label class="form-check-label" for="sharedProperty"> Yes </label>
+  </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      formControlName="isSharedProperty"
+      name="isSharedProperty"
+      id="notSharedProperty"
+      [value]="false"
+    />
+    <label class="form-check-label" for="notSharedProperty"> No </label>
+  </div>
+  <h4>Address</h4>
+  <div class="row">
+    <div class="form-group col-8">
+      <label for="address">House No/Area/Street</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="address"
+        id="address"
+      />
+      <div
+        [ngStyle]="{
+          display:
+            (newPropertyForm.controls['address'].dirty || isSubmit) &&
+            newPropertyForm.controls['address'].invalid
+              ? 'block'
+              : 'none'
+        }"
+        class="invalid-feedback"
+      >
+        Please provide Address.
+      </div>
+    </div>
+    <div class="form-group col-2">
+      <label for="city">City</label>
+      <input
+        type="text"
+        formControlName="city"
+        class="form-control"
+        id="city"
+      />
+      <div
+        [ngStyle]="{
+          display:
+            (newPropertyForm.controls['city'].dirty || isSubmit) &&
+            newPropertyForm.controls['city'].invalid
+              ? 'block'
+              : 'none'
+        }"
+        class="invalid-feedback"
+      >
+        Please provide a valid city.
+      </div>
+    </div>
+    <div class="form-group col-2">
+      <label for="state">State</label>
+      <input
+        formControlName="state"
+        type="text"
+        class="form-control"
+        id="state"
+      />
+      <div
+        [ngStyle]="{
+          display:
+            (newPropertyForm.controls['state'].dirty || isSubmit) &&
+            newPropertyForm.controls['state'].invalid
+              ? 'block'
+              : 'none'
+        }"
+        class="invalid-feedback"
+      >
+        Please provide a valid state.
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-6">
+      <label for="sqFeet">Square Feet</label>
+      <input
+        formControlName="area"
+        type="text"
+        class="form-control"
+        id="sqFeet"
+      />
+      <div
+        [ngStyle]="{
+          display:
+            (newPropertyForm.controls['area'].dirty || isSubmit) &&
+            newPropertyForm.controls['area'].invalid
+              ? 'block'
+              : 'none'
+        }"
+        class="invalid-feedback"
+      >
+        Please provide property area.
+      </div>
+    </div>
+    <div class="col-6">
+      <h6>Stay/lease type?</h6>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="leaseType"
+          name="leaseType"
+          id="longTermLease"
+          value="Long Term"
+        />
+        <label class="form-check-label" for="exampleRadios1">
+          Long term (6+ months)
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="leaseType"
+          name="leaseType"
+          id="shortTermLease"
+          value="Short Term"
+        />
+        <label class="form-check-label" for="exampleRadios2">
+          Short term
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="leaseType"
+          name="leaseType"
+          id="both"
+          value="any"
+        />
+        <label class="form-check-label" for="exampleRadios2"> Both </label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-4">
+      <label for="rentAmount">Rent per month</label>
+      <input
+        formControlName="rentAmount"
+        type="text"
+        class="form-control"
+        id="rentAmount"
+      />
+      <div
+        [ngStyle]="{
+          display:
+            (newPropertyForm.controls['rentAmount'].dirty || isSubmit) &&
+            newPropertyForm.controls['rentAmount'].invalid
+              ? 'block'
+              : 'none'
+        }"
+        class="invalid-feedback"
+      >
+        Please provide expected Rent Amount.
+      </div>
+    </div>
+    <div class="form-check col-4 negotiable-checkbox">
+      <input
+        type="checkbox"
+        formControlName="isNegotiable"
+        class="form-check-input"
+        id="isNegotiable"
+      />
+      <label class="form-check-label" for="isNegotiable">Negotiable?</label>
+    </div>
+  </div>
+  <h4>Is apartment furnished?</h4>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      formControlName="isFurnished"
+      name="isFurnished"
+      id="furnished"
+      [value]="true"
+    />
+    <label class="form-check-label" for="furnished"> Yes </label>
+  </div>
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="radio"
+      formControlName="isFurnished"
+      name="isFurnished"
+      id="notFurnished"
+      [value]="false"
+    />
+    <label class="form-check-label" for="notFurnished"> No </label>
+  </div>
+  <h4>Amenities Included</h4>
+  <div formGroupName="amenities">
+    @for(amenity of amenities.controls; track $index){
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        [formControlName]="$index"
+        [id]="'inlineCheckbox' + $index"
+      />
+      <label class="form-check-label" [for]="'inlineCheckbox' + $index">{{
+        listOfAmenities[$index]
+      }}</label>
+    </div>
+    }
+  </div>
+  <h4>Description</h4>
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="title"
+      id="title"
+    />
+    <div
+      [ngStyle]="{
+        display:
+          (newPropertyForm.controls['title'].dirty || isSubmit) &&
+          newPropertyForm.controls['title'].invalid
+            ? 'block'
+            : 'none'
+      }"
+      class="invalid-feedback"
+    >
+      Please provide a valid title.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea
+      class="form-control"
+      id="description"
+      formControlName="description"
+      rows="3"
+    ></textarea>
+    <div
+      [ngStyle]="{
+        display:
+          (newPropertyForm.controls['description'].dirty || isSubmit) &&
+          newPropertyForm.controls['description'].invalid
+            ? 'block'
+            : 'none'
+      }"
+      class="invalid-feedback"
+    >
+      Please provide a valid description.
+    </div>
+  </div>
+  @if(urls.length){
+  <div class="image-section">
+    @for(url of urls; track $index){
+    <div class="image-inner-div">
+      <img [src]="url" height="200" />
+      <div (click)="deleteImage($index)" class="close-image-div">
+        <img class="close-image" src="assets/cross.svg" />
+      </div>
+    </div>
+    }
+  </div>
+  }
+  <div class="form-group">
+    <input
+      formControlName="image"
+      type="file"
+      (change)="onSelectFile($event)"
+    />
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>

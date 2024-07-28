@@ -1,0 +1,39 @@
+.advertisement {
+  width: 220px;
+  padding: 5px;
+  background: #fff;
+  border: 1px solid black;
+  &-main-image {
+    width: 100%;
+    height: 220px;
+  }
+  &-title {
+    font-weight: bold;
+    height: 48px;
+  }
+  &-rent {
+    font-weight: bold;
+    color: darkgreen;
+    font-size: 20px;
+  }
+
+  &-desc {
+    height: 80px;
+  }
+  &-btns {
+    display: flex;
+    &-btn {
+      color: white;
+      background: mediumblue;
+    }
+
+    &-landlord-btn {
+      padding: 6px;
+      flex: 1;
+    }
+  }
+}
+
+p {
+  margin: 5px;
+}

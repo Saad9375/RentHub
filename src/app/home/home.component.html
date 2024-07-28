@@ -1,0 +1,25 @@
+<app-header
+  [title]="showFavourites ? 'Favourites' : 'Rent Hub'"
+  [showSideButtons]="
+    showFavourites || signedInUser.role === 'landlord' ? 'logout' : 'both'
+  "
+></app-header>
+<div class="home">
+  @if(!showFavourites && signedInUser.role === 'landlord'){
+  <button type="button" class="btn btn-primary" routerLink="/new-property">
+    Post a New Property
+  </button>
+  }
+  <div>
+    <div class="home-inner-div">
+      @for(property of propertyList; track property.id){
+      <app-advertisement
+        (favouriteToggleEvent)="toggleFavourite($event)"
+        [property]="property"
+        [signedInUser]="signedInUser"
+        [users]="users"
+      ></app-advertisement>
+      }
+    </div>
+  </div>
+</div>

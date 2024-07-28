@@ -1,0 +1,33 @@
+.property-details {
+  padding: 10px;
+  &-image-section {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+
+  &-main {
+    background: lightgreen;
+    padding: 10px;
+    border: 3px solid darkgreen;
+    margin-bottom: 10px;
+  }
+
+  &-heading {
+    font-weight: bold;
+    margin-top: 5px;
+  }
+}
+
+.padding {
+  padding-bottom: 10px;
+}
+
+.submit-comments {
+  padding-top: 5px;
+}
+
+.buttons {
+  padding-top: 15px;
+}

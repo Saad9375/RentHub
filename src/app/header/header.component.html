@@ -1,0 +1,25 @@
+<div class="header">
+  <!-- @if(showSideButtons!=='none'){
+  <div class="header-right-side-div hidden">
+    @if(showSideButtons==='both' || showSideButtons==='favourites'){
+    <button type="button" class="btn btn-link">Favourites</button>
+    } @if(showSideButtons==='both' || showSideButtons==='logout'){
+    <button type="button" class="btn btn-link">Logout</button>
+    }
+  </div>
+  } -->
+  <div class="header-title">{{ title }}</div>
+  @if(showSideButtons!=='none'){
+  <div class="header-right-side-div">
+    @if(showSideButtons==='both' || showSideButtons==='favourites'){
+    <button type="button" class="btn btn-link" [routerLink]="['/favourites']">
+      Favourites
+    </button>
+    } @if(showSideButtons==='both' || showSideButtons==='logout'){
+    <button type="button" class="btn btn-link" (click)="logout()">
+      Logout
+    </button>
+    }
+  </div>
+  }
+</div>
