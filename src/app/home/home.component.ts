@@ -12,6 +12,7 @@ import { NgStyle } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FilterComponent } from '../filter/filter.component';
 import { FilterData } from '../shared/models/filter-data.model';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   users!: UserInfo[];
   displayStyle = 'none';
   isFilterApplied = false;
+  Constants = AppConstants;
 
   /**
    * Creates an instance of HomeComponent.
@@ -121,13 +123,19 @@ export class HomeComponent implements OnInit, OnDestroy {
    * @memberOf HomeComponent
    */
   private storeUsersData() {
-    sessionStorage.setItem('signedInUser', JSON.stringify(this.signedInUser));
+    sessionStorage.setItem(
+      AppConstants.SIGNED_IN_USER,
+      JSON.stringify(this.signedInUser)
+    );
     let index = this.users.findIndex(
       (user: UserInfo) => user.email === this.signedInUser.email
     );
     if (index >= 0 && index !== -1) {
       this.users[index] = this.signedInUser;
-      sessionStorage.setItem('usersList', JSON.stringify(this.users));
+      sessionStorage.setItem(
+        AppConstants.USERS_LIST,
+        JSON.stringify(this.users)
+      );
     }
   }
 
@@ -138,15 +146,17 @@ export class HomeComponent implements OnInit, OnDestroy {
    */
   private getPageData() {
     this.signedInUser = JSON.parse(
-      sessionStorage.getItem('signedInUser') as string
+      sessionStorage.getItem(AppConstants.SIGNED_IN_USER) as string
     );
-    this.users = JSON.parse(sessionStorage.getItem('usersList') as string);
+    this.users = JSON.parse(
+      sessionStorage.getItem(AppConstants.USERS_LIST) as string
+    );
     this.subscription = this.store
       .pipe(select(getPropertyList))
       .subscribe((propertyList: Property[]) => {
         this.originalPropertyList = _.cloneDeep(propertyList);
         this.propertyList = _.cloneDeep(propertyList);
-        if (this.signedInUser.role === 'landlord') {
+        if (this.signedInUser.role === AppConstants.LANDLORD) {
           this.propertyList = this.propertyList.filter(
             (property: Property) =>
               property.userEmail === this.signedInUser.email
@@ -183,9 +193,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (result?.area) {
       this.propertyList = this.propertyList.filter(
         (property: Property) =>
-          property.address.includes(result.area) ||
-          property.city.includes(result.area) ||
-          property.state.includes(result.area)
+          property.address.toUpperCase().includes(result.area.toUpperCase()) ||
+          property.city.toUpperCase().includes(result.area.toUpperCase()) ||
+          property.state.toUpperCase().includes(result.area.toUpperCase())
       );
     }
     if (result?.rentStartingRange && result.rentEndingRange) {

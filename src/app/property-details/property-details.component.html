@@ -56,7 +56,7 @@
     <button routerLink="/home" class="btn btn-outline-primary">
       Back to Home
     </button>
-    @if(user.role!=='landlord'){
+    @if(user.role!==Constants.LANDLORD){
     <button
       class="btn"
       (click)="toggleFavourite()"

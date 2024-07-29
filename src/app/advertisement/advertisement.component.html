@@ -1,5 +1,7 @@
 <div
-  [ngStyle]="{ height: signedInUser.role === 'renter' ? '465px' : '450px' }"
+  [ngStyle]="{
+    height: signedInUser.role === Constants.RENTER ? '465px' : '450px'
+  }"
   class="advertisement"
 >
   @if(imageUrls && imageUrls.length){
@@ -21,7 +23,7 @@
   <p class="advertisement-desc">{{ property.description.slice(0, 60) }}...</p>
   }@else{
   <p class="advertisement-desc">{{ property.description }}</p>
-  } @if(signedInUser.role==='renter'){
+  } @if(signedInUser.role===Constants.RENTER){
   <div class="advertisement-btns">
     <button
       [routerLink]="['/property-details', property.id]"

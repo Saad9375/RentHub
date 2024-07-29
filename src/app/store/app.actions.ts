@@ -7,18 +7,3 @@ export const updatePropertyList = createAction(
   'Update Property List',
   props<{ properties: Property[] }>()
 );
-
-// export const setSignedInUser = createAction(
-//   'Set Signed in User',
-//   props<{ signedInUser: UserInfo | null }>()
-// );
-
-// export const addUser = createAction(
-//   'Add a user after successful signup',
-//   props<UserInfo>()
-// );
-
-// export const updateUsersList = createAction(
-//   'Update Users List',
-//   props<{ users: UserInfo[] }>()
-// );

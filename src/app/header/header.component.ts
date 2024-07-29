@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { AppConstants } from '../shared/const/app.constants';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ import { Store } from '@ngrx/store';
 })
 export class HeaderComponent {
   @Input() showSideButtons: string = 'none';
-  @Input() title = 'Rent Hub';
+  @Input() title = AppConstants.RENT_HUB;
+  Constants = AppConstants;
 
   /**
    * Creates an instance of HeaderComponent.
@@ -20,8 +22,11 @@ export class HeaderComponent {
    *
    * @memberOf HeaderComponent
    */
-  constructor(private store: Store, private router: Router) {}
+  constructor(private location: Location, private router: Router) {}
 
+  goBack() {
+    this.location.back();
+  }
   /**
    * @description this function is used to signout the user
    * @memberOf HeaderComponent
@@ -31,7 +36,7 @@ export class HeaderComponent {
       'Are you sure you want to Logout !!'
     ).valueOf();
     if (logoutConfirmation) {
-      sessionStorage.removeItem('signedInUser');
+      sessionStorage.removeItem(AppConstants.SIGNED_IN_USER);
       this.router.navigate(['/login']);
     }
   }

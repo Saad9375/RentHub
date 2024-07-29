@@ -18,6 +18,7 @@ import { select, Store } from '@ngrx/store';
 import { getPropertyList } from '../store/app.selectors';
 import { Property } from '../shared/models/property.model';
 import { addProperty, updatePropertyList } from '../store/app.actions';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-new-property',
@@ -39,6 +40,7 @@ export class NewPropertyComponent implements OnInit {
   id?: number;
   property?: Property;
   properties: Property[] = [];
+  Constants = AppConstants;
 
   /**
    * Creates an instance of NewPropertyComponent.
@@ -122,7 +124,7 @@ export class NewPropertyComponent implements OnInit {
         }
       });
       let signedInUser = JSON.parse(
-        sessionStorage.getItem('signedInUser') as string
+        sessionStorage.getItem(AppConstants.SIGNED_IN_USER) as string
       );
       let property: Property = {
         id: this.isEdit ? (this.id as number) : this.maxId + 1,

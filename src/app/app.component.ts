@@ -2,6 +2,7 @@ import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { users } from './shared/data/initial-data';
+import { AppConstants } from './shared/const/app.constants';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
    */
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      sessionStorage.setItem('usersList', JSON.stringify(users));
+      sessionStorage.setItem(AppConstants.USERS_LIST, JSON.stringify(users));
     }
   }
 }

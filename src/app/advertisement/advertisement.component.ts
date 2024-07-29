@@ -9,6 +9,7 @@ import { Property } from '../shared/models/property.model';
 import { NgStyle } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserInfo } from '../shared/models/user-info.model';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-advertisement',
@@ -23,6 +24,8 @@ export class AdvertisementComponent implements OnChanges {
   @Input() users!: UserInfo[];
   @Output() favouriteToggleEvent = new EventEmitter();
   imageUrls: string[] = [];
+  Constants = AppConstants;
+
   constructor() {}
 
   /**

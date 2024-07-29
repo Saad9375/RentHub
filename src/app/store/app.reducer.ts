@@ -22,13 +22,4 @@ export const appReducer = createReducer(
     ...state,
     propertyList: props.properties,
   }))
-  // on(setSignedInUser, (state, props) => ({
-  //   ...state,
-  //   signedInUser: props.signedInUser,
-  // })),
-  // on(addUser, (state, user) => ({
-  //   ...state,
-  //   usersData: [...state.usersData, user],
-  // })),
-  // on(updateUsersList, (state, props) => ({ ...state, usersData: props.users }))
 );

@@ -1,4 +1,7 @@
-<app-header [title]="'Rent Hub'" [showSideButtons]="'none'"></app-header>
+<app-header
+  [title]="Constants.RENT_HUB"
+  [showSideButtons]="'none'"
+></app-header>
 <div class="login">
   <div class="row">
     <div class="col-md-6">
@@ -37,8 +40,8 @@
               formControlName="role"
               class="form-select"
             >
-              <option value="renter">Renter</option>
-              <option value="landlord">Landlord</option>
+              <option [value]="Constants.RENTER">Renter</option>
+              <option [value]="Constants.LANDLORD">Landlord</option>
             </select>
           </div>
           <div class="form-group">

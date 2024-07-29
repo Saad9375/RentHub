@@ -10,6 +10,7 @@ import {
 import { UserInfo } from '../shared/models/user-info.model';
 import { NgStyle } from '@angular/common';
 import { users as usersList } from '../shared/data/initial-data';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ import { users as usersList } from '../shared/data/initial-data';
 export class LoginComponent implements OnInit {
   isSubmit = false;
   loginForm!: FormGroup;
+  Constants = AppConstants;
+
   constructor(private router: Router, private formBuilder: FormBuilder) {}
 
   /**
@@ -42,9 +45,14 @@ export class LoginComponent implements OnInit {
   login() {
     this.isSubmit = true;
     if (this.loginForm.valid) {
-      let users = JSON.parse(sessionStorage.getItem('usersList') as string);
+      let users = JSON.parse(
+        sessionStorage.getItem(AppConstants.USERS_LIST) as string
+      );
       if (!users) {
-        sessionStorage.setItem('usersList', JSON.stringify(usersList));
+        sessionStorage.setItem(
+          AppConstants.USERS_LIST,
+          JSON.stringify(usersList)
+        );
         users = usersList;
       }
       let user = users.find(
@@ -53,7 +61,10 @@ export class LoginComponent implements OnInit {
           user.password === this.loginForm.value.password
       );
       if (user) {
-        sessionStorage.setItem('signedInUser', JSON.stringify(user));
+        sessionStorage.setItem(
+          AppConstants.SIGNED_IN_USER,
+          JSON.stringify(user)
+        );
         this.router.navigate(['/home']);
       } else {
         alert('Not a valid user !!');

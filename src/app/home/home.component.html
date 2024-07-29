@@ -1,13 +1,15 @@
 <app-header
-  [title]="showFavourites ? 'Favourites' : 'Rent Hub'"
+  [title]="showFavourites ? Constants.FAVOURITES : Constants.RENT_HUB"
   [showSideButtons]="
-    showFavourites || signedInUser.role === 'landlord' ? 'logout' : 'both'
+    showFavourites || signedInUser.role === Constants.LANDLORD
+      ? 'logout'
+      : 'both'
   "
 ></app-header>
 <div class="home">
   <div class="home-outer-buttons">
     <div class="home-buttons">
-      @if(!showFavourites && signedInUser.role === 'landlord'){
+      @if(!showFavourites && signedInUser.role === Constants.LANDLORD){
       <button
         type="button"
         class="btn btn-primary"
@@ -57,7 +59,7 @@
         {{
           isFilterApplied
             ? "No Such Property found"
-            : signedInUser.role === "landlord"
+            : signedInUser.role === Constants.LANDLORD
             ? "You haven't posted any property"
             : showFavourites
             ? "No Property available in Favourites"

@@ -11,6 +11,7 @@ import { UserInfo } from '../shared/models/user-info.model';
 import { NgStyle } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { users } from '../shared/data/initial-data';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,6 +24,7 @@ export class SignUpComponent implements OnInit {
   signupForm!: FormGroup;
   isSubmit = false;
   users: UserInfo[] = [];
+  Constants = AppConstants;
 
   /**
    * Creates an instance of SignUpComponent.
@@ -41,7 +43,7 @@ export class SignUpComponent implements OnInit {
     this.isSubmit = false;
     this.signupForm = this.formBuilder.group({
       name: ['', Validators.required],
-      role: ['renter', Validators.required],
+      role: [AppConstants.RENTER, Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
@@ -56,9 +58,11 @@ export class SignUpComponent implements OnInit {
   signup() {
     this.isSubmit = true;
     if (this.signupForm.valid) {
-      this.users = JSON.parse(sessionStorage.getItem('usersList') as string);
+      this.users = JSON.parse(
+        sessionStorage.getItem(AppConstants.USERS_LIST) as string
+      );
       if (!this.users) {
-        sessionStorage.setItem('usersList', JSON.stringify(users));
+        sessionStorage.setItem(AppConstants.USERS_LIST, JSON.stringify(users));
         this.users = users;
       }
       let userFound: UserInfo | undefined;
@@ -70,7 +74,7 @@ export class SignUpComponent implements OnInit {
           alert('User already exists !!');
         } else {
           sessionStorage.setItem(
-            'usersList',
+            AppConstants.USERS_LIST,
             JSON.stringify([...this.users, this.signupForm.value])
           );
           alert(

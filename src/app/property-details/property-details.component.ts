@@ -9,6 +9,7 @@ import { AmenityKeys, listOfAmenities } from '../shared/const/amenities';
 import { select, Store } from '@ngrx/store';
 import { getPropertyList } from '../store/app.selectors';
 import { updatePropertyList } from '../store/app.actions';
+import { AppConstants } from '../shared/const/app.constants';
 
 @Component({
   selector: 'app-property-details',
@@ -28,6 +29,7 @@ export class PropertyDetailsComponent implements OnInit {
   newComment: string = '';
   user!: UserInfo;
   users!: UserInfo[];
+  Constants = AppConstants;
 
   /**
    * Creates an instance of PropertyDetailsComponent.
@@ -98,13 +100,19 @@ export class PropertyDetailsComponent implements OnInit {
    * @memberOf PropertyDetailsComponent
    */
   private storeUsersData() {
-    sessionStorage.setItem('signedInUser', JSON.stringify(this.user));
+    sessionStorage.setItem(
+      AppConstants.SIGNED_IN_USER,
+      JSON.stringify(this.user)
+    );
     let index = this.users.findIndex(
       (user: UserInfo) => user.email === this.user.email
     );
     if (index >= 0 && index !== -1) {
       this.users[index] = this.user;
-      sessionStorage.setItem('usersList', JSON.stringify(this.users));
+      sessionStorage.setItem(
+        AppConstants.USERS_LIST,
+        JSON.stringify(this.users)
+      );
     }
   }
 
@@ -118,8 +126,12 @@ export class PropertyDetailsComponent implements OnInit {
     this.route.params.subscribe((param) => {
       this.id = +param['id'];
     });
-    this.user = JSON.parse(sessionStorage.getItem('signedInUser') as string);
-    this.users = JSON.parse(sessionStorage.getItem('usersList') as string);
+    this.user = JSON.parse(
+      sessionStorage.getItem(AppConstants.SIGNED_IN_USER) as string
+    );
+    this.users = JSON.parse(
+      sessionStorage.getItem(AppConstants.USERS_LIST) as string
+    );
 
     this.store
       .pipe(select(getPropertyList))
