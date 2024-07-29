@@ -6,19 +6,21 @@ Renter- Renter can view all the properties and mark them as favourites if they w
 
 Landlord- Landlord can view/edit their own published properties and can publish new properties. They can even reply on the queries which others are having on their properties through comments.
 
+- Users data is being managed with the help of sessionStorage whereas properties data is being managed by NgRx store. Initially 2 users and 3 properties are taken and defined in initial-data.ts file
+
 - Users-
   {
   name: 'Ajay Kumar',
-  email: 'ajaykumar@gmail.com',
+  email: 'user@gmail.com',
   role: 'renter',
-  password: 'test1234',
+  password: 'user123',
   favourites: [2, 3],
   },
   {
   name: 'Sandeep Singh',
-  email: 'sandeepsingh@gmail.com',
+  email: 'admin@gmail.com',
   role: 'landlord',
-  password: 'test123',
+  password: 'admin123',
   favourites: [],
   }
 
