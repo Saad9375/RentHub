@@ -44,8 +44,8 @@
     </div>
     }
   </div>
-  <h4>Photos</h4>
   @if(imageUrls.length){
+  <h4>Photos</h4>
   <div class="property-details-image-section">
     @for(url of imageUrls; track $index){
     <img [src]="url" height="200" />
@@ -56,6 +56,7 @@
     <button routerLink="/home" class="btn btn-outline-primary">
       Back to Home
     </button>
+    @if(user.role!=='landlord'){
     <button
       class="btn"
       (click)="toggleFavourite()"
@@ -66,6 +67,16 @@
     >
       {{ isFavourite ? "Remove from Favourites" : "Mark as Favourite" }}
     </button>
+    }@else {
+    <button
+      style="width: 120px"
+      class="btn btn-success"
+      [routerLink]="['/new-property']"
+      [queryParams]="{ isEdit: true, id: property?.id }"
+    >
+      Edit
+    </button>
+    }
   </div>
   <hr />
   <h4>Comments</h4>

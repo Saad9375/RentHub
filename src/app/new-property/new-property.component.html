@@ -222,7 +222,7 @@
     <label class="form-check-label" for="notFurnished"> No </label>
   </div>
   <h4>Amenities Included</h4>
-  <div formGroupName="amenities">
+  <div formArrayName="amenities">
     @for(amenity of amenities.controls; track $index){
     <div class="form-check form-check-inline">
       <input

@@ -1,10 +1,8 @@
 import { Component, inject, PLATFORM_ID } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { updateUsersList } from './store/app.actions';
-import { fetchUsers } from './store/app.selectors';
-import { UserInfo } from './shared/models/user-info.model';
+import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { isPlatformBrowser } from '@angular/common';
+import { users } from './shared/data/initial-data';
 
 @Component({
   selector: 'app-root',
@@ -19,19 +17,19 @@ export class AppComponent {
   constructor(private store: Store) {
     const platformId = inject(PLATFORM_ID);
     if (isPlatformBrowser(platformId)) {
-      let sessionUsers = sessionStorage.getItem('usersList');
-      if (sessionUsers) {
-        this.store.dispatch(
-          updateUsersList({ users: JSON.parse(sessionUsers) })
-        );
-      } else {
-        this.store
-          .pipe(select(fetchUsers))
-          .subscribe((users: UserInfo[]) => {
-            sessionStorage.setItem('usersList', JSON.stringify(users));
-          })
-          .unsubscribe();
-      }
+      sessionStorage.setItem('usersList', JSON.stringify(users));
+      // if (sessionUsers) {
+      //   this.store.dispatch(
+      //     updateUsersList({ users: JSON.parse(sessionUsers) })
+      //   );
+      // } else {
+      //   this.store
+      //     .pipe(select(fetchUsers))
+      //     .subscribe((users: UserInfo[]) => {
+      //       sessionStorage.setItem('usersList', JSON.stringify(users));
+      //     })
+      //     .unsubscribe();
+      // }
     }
   }
 }

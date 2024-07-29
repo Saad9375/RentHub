@@ -5,11 +5,44 @@
   "
 ></app-header>
 <div class="home">
-  @if(!showFavourites && signedInUser.role === 'landlord'){
-  <button type="button" class="btn btn-primary" routerLink="/new-property">
-    Post a New Property
-  </button>
-  }
+  <div class="home-outer-buttons">
+    <div class="home-buttons">
+      @if(!showFavourites && signedInUser.role === 'landlord'){
+      <button
+        type="button"
+        class="btn btn-primary"
+        style="margin-right: 150px"
+        routerLink="/new-property"
+      >
+        Post a New Property
+      </button>
+      } @if(!showFavourites){
+      <button
+        type="button"
+        class="btn btn-outline-danger clear-button"
+        style="margin-right: 5px"
+        (click)="clearFilter()"
+      >
+        Clear Filter
+      </button>
+      <div class="filter-button">
+        <button
+          type="button"
+          style="margin-right: 7px"
+          class="btn btn-primary"
+          (click)="openPopup()"
+        >
+          Apply Filter
+        </button>
+        @if(isFilterApplied){
+        <div class="check-image-div">
+          <img class="check-image" src="assets/check2.svg" />
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </div>
   <div>
     <div class="home-inner-div">
       @for(property of propertyList; track property.id){

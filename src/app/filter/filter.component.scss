@@ -1,0 +1,31 @@
+.filter {
+  margin: 20px 15px 15px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+h6 {
+  margin-bottom: 5px;
+}
+
+.buttons-outer-div {
+  display: flex;
+}
+.buttons-div {
+  margin: auto;
+}
+
+.clear-button {
+  margin-right: 5px;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 12px;
+  font-size: 25px;
+  border: none;
+  background: transparent;
+}

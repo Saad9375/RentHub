@@ -9,9 +9,7 @@ import {
 } from '@angular/forms';
 import { UserInfo } from '../shared/models/user-info.model';
 import { NgStyle } from '@angular/common';
-import { select, Store } from '@ngrx/store';
-import { fetchUsers } from '../store/app.selectors';
-import { addUser } from '../store/app.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-sign-up',
@@ -43,28 +41,27 @@ export class SignUpComponent implements OnInit {
   signup() {
     this.isSubmit = true;
     if (this.signupForm.valid) {
-      this.store.pipe(select(fetchUsers)).subscribe((users: UserInfo[]) => {
-        let userFound: UserInfo | undefined;
-        this.users = users;
-        if (this.users?.length) {
-          userFound = this.users.find(
-            (user: UserInfo) => user.email === this.signupForm.value.email
+      let users = JSON.parse(sessionStorage.getItem('usersList') as string);
+      let userFound: UserInfo | undefined;
+      this.users = users;
+      if (this.users?.length) {
+        userFound = this.users.find(
+          (user: UserInfo) => user.email === this.signupForm.value.email
+        );
+        if (userFound) {
+          alert('User already exists !!');
+        } else {
+          // this.store.dispatch(addUser(this.signupForm.value));
+          sessionStorage.setItem(
+            'usersList',
+            JSON.stringify([...this.users, this.signupForm.value])
           );
-          if (userFound) {
-            alert('User already exists !!');
-          } else {
-            this.store.dispatch(addUser(this.signupForm.value));
-            sessionStorage.setItem(
-              'usersList',
-              JSON.stringify([...this.users, this.signupForm.value])
-            );
-            alert(
-              `${this.signupForm.value.name} has been successfully registered !! Please login to continue.`
-            );
-            this.router.navigate(['/login']);
-          }
+          alert(
+            `${this.signupForm.value.name} has been successfully registered !! Please login to continue.`
+          );
+          this.router.navigate(['/login']);
         }
-      });
+      }
     }
   }
 }

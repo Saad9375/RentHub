@@ -6,6 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
 import { provideHttpClient } from '@angular/common/http';
 import { appReducer } from './store/app.reducer';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       app: appReducer,
     }),
-    provideHttpClient(),
+    provideHttpClient(), provideAnimationsAsync('noop'),
   ],
 };

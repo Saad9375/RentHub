@@ -11,8 +11,6 @@ import { AuthService } from '../shared/services/auth/auth.service';
 import { UserInfo } from '../shared/models/user-info.model';
 import { NgStyle } from '@angular/common';
 import { select, Store } from '@ngrx/store';
-import { fetchUsers } from '../store/app.selectors';
-import { userInfo } from 'os';
 
 @Component({
   selector: 'app-login',
@@ -24,12 +22,7 @@ import { userInfo } from 'os';
 export class LoginComponent implements OnInit {
   isSubmit = false;
   loginForm!: FormGroup;
-  constructor(
-    private store: Store,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.isSubmit = false;
@@ -43,19 +36,18 @@ export class LoginComponent implements OnInit {
     console.log('LoginForm-', this.loginForm);
     this.isSubmit = true;
     if (this.loginForm.valid) {
-      this.store.pipe(select(fetchUsers)).subscribe((users: UserInfo[]) => {
-        let user = users?.find(
-          (user: UserInfo) =>
-            user.email === this.loginForm.value.email &&
-            user.password === this.loginForm.value.password
-        );
-        if (user) {
-          sessionStorage.setItem('signedInUser', JSON.stringify(user));
-          this.router.navigate(['/home']);
-        } else {
-          alert('Not a valid user !!');
-        }
-      });
+      let users = JSON.parse(sessionStorage.getItem('usersList') as string);
+      let user = users?.find(
+        (user: UserInfo) =>
+          user.email === this.loginForm.value.email &&
+          user.password === this.loginForm.value.password
+      );
+      if (user) {
+        sessionStorage.setItem('signedInUser', JSON.stringify(user));
+        this.router.navigate(['/home']);
+      } else {
+        alert('Not a valid user !!');
+      }
     }
   }
 }

@@ -8,7 +8,7 @@ import { NgClass, NgStyle } from '@angular/common';
 import { PropertyService } from '../shared/services/property/property.service';
 import { AmenityKeys, listOfAmenities } from '../shared/const/amenities';
 import { select, Store } from '@ngrx/store';
-import { getPropertyList, getSignedInUser } from '../store/app.selectors';
+import { getPropertyList } from '../store/app.selectors';
 import { updatePropertyList } from '../store/app.actions';
 
 @Component({
