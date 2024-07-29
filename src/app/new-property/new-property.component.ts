@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgStyle } from '@angular/common';
 
 import _ from 'lodash';
-import { PropertyService } from '../shared/services/property/property.service';
 import { AmenityKeys, listOfAmenities } from '../shared/const/amenities';
 import { select, Store } from '@ngrx/store';
 import { getPropertyList } from '../store/app.selectors';
@@ -41,6 +40,15 @@ export class NewPropertyComponent implements OnInit {
   property?: Property;
   properties: Property[] = [];
 
+  /**
+   * Creates an instance of NewPropertyComponent.
+   * @param {FormBuilder} formBuilder
+   * @param {Store} store
+   * @param {Router} router
+   * @param {ActivatedRoute} activatedRoute
+   *
+   * @memberOf NewPropertyComponent
+   */
   constructor(
     private formBuilder: FormBuilder,
     private store: Store,
@@ -48,40 +56,33 @@ export class NewPropertyComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
+  /**
+   * @description getter OF FormArray - Amenities
+   * @readonly
+   * @type {FormArray<FormControl>}
+   * @memberOf NewPropertyComponent
+   */
   get amenities(): FormArray<FormControl> {
     return this.newPropertyForm.get('amenities') as FormArray;
   }
 
+  /**
+   * @description initializes the data, creates the form and populates data incase of Edit
+   * @memberOf NewPropertyComponent
+   */
   ngOnInit() {
-    this.isEdit = false;
-    this.urls = [];
-    this.activatedRoute.queryParams.subscribe((params) => {
-      if (params['isEdit']) {
-        this.isEdit = true;
-      }
-      this.id = +params['id'];
-    });
+    this.initializeData();
     this.createNewForm();
-    this.store
-      .pipe(select(getPropertyList))
-      .subscribe((propertyList: Property[]) => {
-        this.properties = _.cloneDeep(propertyList);
-        if (!this.isEdit) {
-          let id = this.properties.map((property: Property) => property.id);
-          this.maxId = Math.max(...id);
-        } else if (this.id) {
-          this.property = this.properties.find(
-            (property: Property) => property.id === this.id
-          );
-          if (this.property) {
-            this.populateExistingData();
-          }
-        }
-      });
+    this.getStoreData();
   }
 
+  /**
+   * @description triggers when user uploads image
+   * @param {*} event
+   *
+   * @memberOf NewPropertyComponent
+   */
   onSelectFile(event: any) {
-    console.log('Event-', event);
     if (event.target.files) {
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -92,6 +93,12 @@ export class NewPropertyComponent implements OnInit {
     }
   }
 
+  /**
+   * @description used to delete the selected image
+   * @param {number} index
+   *
+   * @memberOf NewPropertyComponent
+   */
   deleteImage(index: number) {
     this.urls.splice(index, 1);
     if (index < this.images.length) {
@@ -101,6 +108,10 @@ export class NewPropertyComponent implements OnInit {
     }
   }
 
+  /**
+   * @description this function is triggered to submit the form
+   * @memberOf NewPropertyComponent
+   */
   createPost() {
     this.isSubmit = true;
     if (this.newPropertyForm.valid) {
@@ -157,6 +168,12 @@ export class NewPropertyComponent implements OnInit {
     }
   }
 
+  /**
+   * @description this function is used to create a new form
+   * @private
+   *
+   * @memberOf NewPropertyComponent
+   */
   private createNewForm() {
     this.newPropertyForm = this.formBuilder.group({
       propertyType: ['apartment', Validators.required],
@@ -183,13 +200,24 @@ export class NewPropertyComponent implements OnInit {
     );
   }
 
+  /**
+   *
+   * @description populate the existing data in the form for Edit case
+   * @private
+   * @memberOf NewPropertyComponent
+   */
   private populateExistingData() {
     if (this.property?.amenities?.length) {
-      this.amenities.value.forEach((amenity: boolean, index: number) => {
+      let amenities = [];
+      for (let index = 0; index < this.listOfAmenities.length; index++) {
         if (this.property?.amenities?.includes(listOfAmenities[index])) {
-          amenity = true;
+          amenities.push(new FormControl(true));
+        } else {
+          amenities.push(new FormControl(false));
         }
-      });
+      }
+      this.newPropertyForm.removeControl('amenities');
+      this.newPropertyForm.addControl('amenities', new FormArray(amenities));
     }
     this.newPropertyForm.patchValue({
       propertyType: this.property?.propertyType,
@@ -220,5 +248,47 @@ export class NewPropertyComponent implements OnInit {
         };
       });
     }
+  }
+
+  /**
+   * @description used to fetch relevant data from the store
+   * @private
+   *
+   * @memberOf NewPropertyComponent
+   */
+  private getStoreData() {
+    this.store
+      .pipe(select(getPropertyList))
+      .subscribe((propertyList: Property[]) => {
+        this.properties = _.cloneDeep(propertyList);
+        if (!this.isEdit) {
+          let id = this.properties.map((property: Property) => property.id);
+          this.maxId = Math.max(...id);
+        } else if (this.id) {
+          this.property = this.properties.find(
+            (property: Property) => property.id === this.id
+          );
+          if (this.property) {
+            this.populateExistingData();
+          }
+        }
+      });
+  }
+
+  /**
+   * @description initialize default values and fetch query params
+   * @private
+   *
+   * @memberOf NewPropertyComponent
+   */
+  private initializeData() {
+    this.isEdit = false;
+    this.urls = [];
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['isEdit']) {
+        this.isEdit = true;
+      }
+      this.id = +params['id'];
+    });
   }
 }

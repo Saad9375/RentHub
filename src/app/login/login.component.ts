@@ -7,10 +7,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../shared/services/auth/auth.service';
 import { UserInfo } from '../shared/models/user-info.model';
 import { NgStyle } from '@angular/common';
-import { select, Store } from '@ngrx/store';
+import { users as usersList } from '../shared/data/initial-data';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +23,10 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   constructor(private router: Router, private formBuilder: FormBuilder) {}
 
+  /**
+   * @description called when the component is loaded to initialize the data and form
+   * @memberOf LoginComponent
+   */
   ngOnInit() {
     this.isSubmit = false;
     this.loginForm = this.formBuilder.group({
@@ -32,12 +35,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  /**
+   * @description logic to signin the user
+   * @memberOf LoginComponent
+   */
   login() {
-    console.log('LoginForm-', this.loginForm);
     this.isSubmit = true;
     if (this.loginForm.valid) {
       let users = JSON.parse(sessionStorage.getItem('usersList') as string);
-      let user = users?.find(
+      if (!users) {
+        sessionStorage.setItem('usersList', JSON.stringify(usersList));
+        users = usersList;
+      }
+      let user = users.find(
         (user: UserInfo) =>
           user.email === this.loginForm.value.email &&
           user.password === this.loginForm.value.password

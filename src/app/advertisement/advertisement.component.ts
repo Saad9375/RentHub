@@ -25,8 +25,11 @@ export class AdvertisementComponent implements OnChanges {
   imageUrls: string[] = [];
   constructor() {}
 
+  /**
+   * @description this will be executed whenever any input value will change and will reflect the data on UI
+   * @memberOf AdvertisementComponent
+   */
   ngOnChanges() {
-    console.log('Property List-', this.property);
     this.imageUrls = this.property?.images?.map(
       (image: string) => 'assets/' + image
     );
@@ -38,10 +41,15 @@ export class AdvertisementComponent implements OnChanges {
           this.imageUrls?.push(event.target.result.toString());
         };
       });
-      console.log('New Images-', this.property);
     }
   }
 
+  /**
+   * @description getter of isFavourite property
+   * @readonly
+   * @type {boolean}
+   * @memberOf AdvertisementComponent
+   */
   get isFavourite(): boolean {
     let isFavourite = false;
     if (this.property) {
@@ -50,6 +58,10 @@ export class AdvertisementComponent implements OnChanges {
     return isFavourite;
   }
 
+  /**
+   * @description will be triggered when user tries to change the favourite status
+   * @memberOf AdvertisementComponent
+   */
   toggleFavourite() {
     this.favouriteToggleEvent.emit(this.property.id);
   }

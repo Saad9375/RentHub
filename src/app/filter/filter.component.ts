@@ -20,19 +20,40 @@ export class FilterComponent implements OnInit {
   listOfAmenities = listOfAmenities;
   filterForm!: FormGroup;
 
+  /**
+   * Creates an instance of FilterComponent.
+   * @param {FormBuilder} formBuilder
+   * @param {MatDialogRef<FilterComponent>} dialogRef
+   *
+   * @memberOf FilterComponent
+   */
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<FilterComponent>
   ) {}
 
+  /**
+   * getter of Form Array - amenities
+   * @readonly
+   * @type {FormArray<FormControl>}
+   * @memberOf FilterComponent
+   */
   get amenities(): FormArray<FormControl> {
     return this.filterForm.get('amenities') as FormArray;
   }
 
+  /**
+   * @description will initialize the form when component is loaded
+   * @memberOf FilterComponent
+   */
   ngOnInit() {
     this.createForm();
   }
 
+  /**
+   * @description will clear all the filters and closes the dialog
+   * @memberOf FilterComponent
+   */
   clearFilter() {
     this.filterForm.reset();
     this.dialogRef.close({
@@ -42,12 +63,20 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  /**
+   * @description this function will close the dialog
+   * @memberOf FilterComponent
+   */
   close() {
     this.dialogRef.close();
   }
 
+  /**
+   * @description will be triggered when user submits the form and will pass all the filters
+   *  to the parent component
+   * @memberOf FilterComponent
+   */
   applyFilters() {
-    console.log('FilterForm-', this.filterForm);
     let amenities: string[] = [];
     this.amenities.value.forEach((amenity: boolean, index: number) => {
       if (amenity) {
@@ -61,6 +90,12 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  /**
+   * @description will create a form for the filters
+   * @private
+   *
+   * @memberOf FilterComponent
+   */
   private createForm() {
     this.filterForm = this.formBuilder.group({
       area: [''],

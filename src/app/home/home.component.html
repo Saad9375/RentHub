@@ -30,7 +30,7 @@
           type="button"
           style="margin-right: 7px"
           class="btn btn-primary"
-          (click)="openPopup()"
+          (click)="openFilterDialog()"
         >
           Apply Filter
         </button>
@@ -52,6 +52,18 @@
         [signedInUser]="signedInUser"
         [users]="users"
       ></app-advertisement>
+      } @if(!propertyList.length){
+      <div>
+        {{
+          isFilterApplied
+            ? "No Such Property found"
+            : signedInUser.role === "landlord"
+            ? "You haven't posted any property"
+            : showFavourites
+            ? "No Property available in Favourites"
+            : "No property is available"
+        }}
+      </div>
       }
     </div>
   </div>

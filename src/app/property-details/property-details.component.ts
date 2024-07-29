@@ -5,7 +5,6 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserInfo } from '../shared/models/user-info.model';
 import { NgClass, NgStyle } from '@angular/common';
-import { PropertyService } from '../shared/services/property/property.service';
 import { AmenityKeys, listOfAmenities } from '../shared/const/amenities';
 import { select, Store } from '@ngrx/store';
 import { getPropertyList } from '../store/app.selectors';
@@ -30,9 +29,92 @@ export class PropertyDetailsComponent implements OnInit {
   user!: UserInfo;
   users!: UserInfo[];
 
+  /**
+   * Creates an instance of PropertyDetailsComponent.
+   * @param {ActivatedRoute} route
+   * @param {Store} store
+   *
+   * @memberOf PropertyDetailsComponent
+   */
   constructor(private route: ActivatedRoute, private store: Store) {}
 
+  /**
+   * @description initializes data once the component is loaded
+   * @memberOf PropertyDetailsComponent
+   */
   ngOnInit() {
+    this.getPageData();
+  }
+
+  /**
+   * @description getter of isFavourite property to determine whether proper is marked favourite
+   * or not
+   * @readonly
+   * @type {boolean}
+   * @memberOf PropertyDetailsComponent
+   */
+  get isFavourite(): boolean {
+    let isFavourite = false;
+    if (this.property) {
+      isFavourite = !!this.user?.favourites?.includes(this.property.id);
+    }
+    return isFavourite;
+  }
+
+  /**
+   * @description used to submit a new comment
+   * @memberOf PropertyDetailsComponent
+   */
+  submit() {
+    if (this.newComment) {
+      this.property?.comments.push({
+        user: this.user as UserInfo,
+        comment: this.newComment,
+      });
+    }
+    this.newComment = '';
+    this.store.dispatch(updatePropertyList({ properties: this.propertyList }));
+  }
+
+  /**
+   * @description used to toggle the favourite status of the selected property
+   * @memberOf PropertyDetailsComponent
+   */
+  toggleFavourite() {
+    if (this.isFavourite) {
+      this.user.favourites = this.user.favourites.filter(
+        (propertyId: number) => propertyId !== this.property?.id
+      );
+    } else {
+      this.user.favourites.push(this.property?.id as number);
+    }
+    this.storeUsersData();
+  }
+
+  /**
+   * @description called to upload modified user's data once the favourites are changed
+   * @private
+   *
+   * @memberOf PropertyDetailsComponent
+   */
+  private storeUsersData() {
+    sessionStorage.setItem('signedInUser', JSON.stringify(this.user));
+    let index = this.users.findIndex(
+      (user: UserInfo) => user.email === this.user.email
+    );
+    if (index >= 0 && index !== -1) {
+      this.users[index] = this.user;
+      sessionStorage.setItem('usersList', JSON.stringify(this.users));
+    }
+  }
+
+  /**
+   * @description used to fetch and display all the relevant data
+   * @private
+   *
+   * @memberOf PropertyDetailsComponent
+   */
+  private getPageData() {
     this.route.params.subscribe((param) => {
       this.id = +param['id'];
     });
@@ -62,47 +144,6 @@ export class PropertyDetailsComponent implements OnInit {
           this.imageUrls.push(event.target.result.toString());
         };
       });
-    }
-  }
-
-  get isFavourite(): boolean {
-    let isFavourite = false;
-    if (this.property) {
-      isFavourite = !!this.user?.favourites?.includes(this.property.id);
-    }
-    return isFavourite;
-  }
-
-  submit() {
-    if (this.newComment) {
-      this.property?.comments.push({
-        user: this.user as UserInfo,
-        comment: this.newComment,
-      });
-    }
-    this.newComment = '';
-    this.store.dispatch(updatePropertyList({ properties: this.propertyList }));
-  }
-
-  toggleFavourite() {
-    if (this.isFavourite) {
-      this.user.favourites = this.user.favourites.filter(
-        (propertyId: number) => propertyId !== this.property?.id
-      );
-    } else {
-      this.user.favourites.push(this.property?.id as number);
-    }
-    this.storeUsersData();
-  }
-
-  private storeUsersData() {
-    sessionStorage.setItem('signedInUser', JSON.stringify(this.user));
-    let index = this.users.findIndex(
-      (user: UserInfo) => user.email === this.user.email
-    );
-    if (index >= 0 && index !== -1) {
-      this.users[index] = this.user;
-      sessionStorage.setItem('usersList', JSON.stringify(this.users));
     }
   }
 }

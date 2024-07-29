@@ -13,14 +13,24 @@ export class HeaderComponent {
   @Input() showSideButtons: string = 'none';
   @Input() title = 'Rent Hub';
 
+  /**
+   * Creates an instance of HeaderComponent.
+   * @param {Store} store
+   * @param {Router} router
+   *
+   * @memberOf HeaderComponent
+   */
   constructor(private store: Store, private router: Router) {}
 
+  /**
+   * @description this function is used to signout the user
+   * @memberOf HeaderComponent
+   */
   logout() {
     let logoutConfirmation = confirm(
       'Are you sure you want to Logout !!'
     ).valueOf();
     if (logoutConfirmation) {
-      // this.store.dispatch(setSignedInUser({ signedInUser: null }));
       sessionStorage.removeItem('signedInUser');
       this.router.navigate(['/login']);
     }

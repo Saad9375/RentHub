@@ -12,7 +12,12 @@
   @if(showSideButtons!=='none'){
   <div class="header-right-side-div">
     @if(showSideButtons==='both' || showSideButtons==='favourites'){
-    <button type="button" class="btn btn-link" [routerLink]="['/favourites']">
+    <button
+      type="button"
+      class="btn btn-link"
+      [routerLink]="['/favourites']"
+      [queryParams]="{ showFavourites: true }"
+    >
       Favourites
     </button>
     } @if(showSideButtons==='both' || showSideButtons==='logout'){
